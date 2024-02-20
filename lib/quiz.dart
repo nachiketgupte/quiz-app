@@ -1,6 +1,8 @@
+import 'package:adv/data/questions.dart';
 import 'package:adv/questoin_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:adv/start_screen.dart';
+import 'package:adv/results_screen.dart';
 
 class Quiz extends StatefulWidget {
   const Quiz({super.key});
@@ -13,6 +15,7 @@ class Quiz extends StatefulWidget {
 
 class _QuizState extends State<Quiz> {
   Widget? activeScreen;
+  List<String> selectedAnswers = [];
   // Since switchScreen may be null, initState is used to instantiate activeScreen, since initState only runs after the function is created.
   @override
   void initState() {
@@ -22,8 +25,18 @@ class _QuizState extends State<Quiz> {
 
   void switchScreen() {
     setState(() {
-      activeScreen = const QuestionsScreen();
+      activeScreen = QuestionsScreen(onSelectAnswer: chooseAnswer);
     });
+  }
+
+  void chooseAnswer(String answer) {
+    selectedAnswers.add(answer);
+    if (selectedAnswers.length == questions.length) {
+      setState(() {
+        activeScreen = ResultsScreen(chosenAnswers: selectedAnswers);
+        selectedAnswers = [];
+      });
+    }
   }
 
   @override
