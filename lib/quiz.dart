@@ -1,5 +1,5 @@
 import 'package:adv/data/questions.dart';
-import 'package:adv/questoin_screen.dart';
+import 'package:adv/question_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:adv/start_screen.dart';
 import 'package:adv/results_screen.dart';
@@ -29,12 +29,17 @@ class _QuizState extends State<Quiz> {
     });
   }
 
+  void restartQuiz() {
+    setState(() {
+      selectedAnswers = [];
+      activeScreen = QuestionsScreen(onSelectAnswer: chooseAnswer);
+    });
+  }
   void chooseAnswer(String answer) {
     selectedAnswers.add(answer);
     if (selectedAnswers.length == questions.length) {
       setState(() {
-        activeScreen = ResultsScreen(chosenAnswers: selectedAnswers);
-        selectedAnswers = [];
+        activeScreen = ResultsScreen(chosenAnswers: selectedAnswers, onRestart: restartQuiz,);
       });
     }
   }
